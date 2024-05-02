@@ -1,5 +1,5 @@
-require "brotli"
-require 'rack/utils'
+require 'brotli'
+require 'rack/headers'
 
 module Rack::Brotli
   # This middleware enables compression of http responses.
@@ -32,7 +32,7 @@ module Rack::Brotli
 
     def call(env)
       status, headers, body = @app.call(env)
-      headers = Rack::Utils::HeaderHash.new(headers)
+      headers = Rack::Headers.new(headers)
 
       unless should_deflate?(env, status, headers, body)
         return [status, headers, body]
